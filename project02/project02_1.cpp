@@ -1,7 +1,7 @@
-/* 
+/*
 -------------------------------------------------------------------------
-Name:     		
-Date: 			
+Name:
+Date:
 Project #:		2
 Status: 		WIP
 Class:			COSC 1337
@@ -21,7 +21,7 @@ Objectives
 #include <cmath>
 using namespace std;
 
-// Decleration of prototype 
+// Decleration of prototype
 void projectStart();
 void projectEnd();
 int getIntegerData(string);
@@ -30,23 +30,22 @@ char getCharData(string);
 string getStringData(string);
 void mainMenu(float);
 float getInitialBalance();
-float getTransactionData(string, bool&);
-void deposit(float&);
+
 int main()
 {
-	// Displays start of project 
+	// Displays start of project
 	projectStart();
-	
+
 	// START YOUR CODING BELOW
-	
+
 	// Variable Declarations
 	char selection;
 	bool loopMenu = true;
 	float balance;
 	bool valid = true;
-	
+
 	balance = getInitialBalance();
-	
+
 	while (loopMenu) // Menu
 	{
 		mainMenu(balance);
@@ -54,7 +53,7 @@ int main()
 
 		if (selection == 'D')
 		{
-			deposit(balance);
+			cout << "Deposit" << endl;
 		}
 		else if (selection == 'W')
 		{
@@ -66,16 +65,16 @@ int main()
 			loopMenu = false;
 		}
 	} // end of while(loopMenu)
-	
+
 	cout << "End of loop" << endl;;
 	cout << balance;
-	
+
 	// Displays end of project
 	projectEnd();
-	
-    return 0;
-    
+
+	return 0;
 }// end of main
+
 
 
 /*
@@ -83,7 +82,7 @@ int main()
 	input: 	parameter(arguments): None
 	output: menu text
 	returns: None
-	process: display 
+	process: display
 	objectives: display
 */
 void mainMenu(float balance)
@@ -122,82 +121,6 @@ float getInitialBalance()
 } // end of getInitialBalance()
 
 
-/*
-	name: 	getTransactionData()
-	input: 	parameter(string prompt, bool& valid): prompt asks user for input, valid confirms it's a valid number (float or int) 
-	output: prompt from input, confirms intent to return to main menu if user input not number
-	returns: float
-	process: ask for input, confirm it's a number, if not a number confirm return to main menu
-	objectives: get information for a transaction from the user
-*/
-float getTransactionData(string prompt, bool& validTransaction)
-{
-	
-	float value;
-	bool promptAgain = true;
-	
-	cout << prompt;
-	
-	while(true) // infinite loop
-	{
-		cout << prompt;
-		if (!(cin >> value)) // if not a number confirm return to menu
-		{
-			cout << "\t\tYour entry was not a valid number." << endl;
-			cout << "\t\tTo confirm returning to the Main Menu enter 'M'." << endl;
-			cout << "\t\tOtherwise please enter a valid number for the transaction." << endl;
-			cout << "--------------------------------------------" << endl;
-		
-			cin.clear(); // clear error buffer
-			cin.ignore(120, '\n');  // clear upto 120 chars or it reaches an enter
-			
-			if (!(cin >> value)) // confirmation of return to menu
-			{
-				cout << "\t\tReturning to the Main Menu." << endl;
-				validTransaction = false;
-				return 0;
-			}
-		}
-		else if (value > 0.0)
-		{
-			promptAgain = false;
-			return value;
-		}
-		else
-		{
-			cout << "\t\tPlease enter a positive number." << endl;
-		}
-		
-	}// end while infinite loop
-
-	
-} // end of int getTransactionData()
-
-
-/*
-	name: 	deposit()
-	input: 	parameter(string prompt, bool& valid): prompt asks user for input, valid confirms it's a valid number (float or int) 
-	output: prompt from input, confirms intent to return to main menu if user input not number
-	returns: float
-	process: ask for input, confirm it's a number, if not a number confirm return to main menu
-	objectives: get information for a transaction from the user
-*/
-void deposit(float& balance)
-{
-	float depositValue;
-	bool validTransaction = true;
-	
-	cout << "--------------------------------------------" << endl;
-	cout << "Enter 'M' to return to the Main Menu" << endl;
-	depositValue = getTransactionData("Enter how much money was deposited: $", validTransaction);
-	
-	if (validTransaction)
-	{
-		balance = balance + depositValue;
-		cout << "You deposited $" << depositValue << endl;
-	}
-	
-} // end of int getTransactionData()
 
 // This function will get a char value from the user
 char getCharData(string prompt)
@@ -216,7 +139,7 @@ char getCharData(string prompt)
 			cout << "\t\tError Message. Selection does not exist"  << endl;
 	} // end of while(true)
 
-} // end of int getFloatData()
+} // end of  getCharData()
 
 // This function will get a float value from the user
 float getFloatData(string prompt)
@@ -234,17 +157,7 @@ float getFloatData(string prompt)
 		} // 	while (!(cin >> value))
 	return value;
 	
-} // end of int getFloatData()
-
-
-
-
-
-
-
-
-
-
+} // end of getFloatData()
 
 
 
@@ -253,7 +166,7 @@ float getFloatData(string prompt)
 int getIntegerData(string prompt)
 {
 	int value;
-	
+
 	while (true)
 	{
 		cout << prompt;
@@ -264,9 +177,9 @@ int getIntegerData(string prompt)
 			cin.ignore(120, '\n');  // c;lear upto 120 chars or it reaches an enter
 			cout << prompt;
 		} // 	while (!(cin >> value))
-			
+
 		return value;
-			
+
 	} // end of while (true)
 } // end of int getIntegerData()
 
@@ -276,24 +189,22 @@ string getStringData(string prompt)
 	string value;
 	cout << prompt;
 	getline(cin, value, '\n'); // accepts spaces in the entry
-	
+
 	return value;
-	
+
 } // end of int getStringData(string prompt)
 
-// The function will display the start of the project 
+// The function will display the start of the project
 void projectStart()
 {
 	cout << "----------------------------------------------"  << endl;
 	cout << "Project #2" << endl;
-	cout << "Written by: Ian Campbell" << endl;
+	cout << "Written by: Ally baba" << endl;
 	cout << "Objectives" << endl;
-	cout << "----------------------------------------------"  << endl;
-	cout << "\tThis program will help you balance your checkbook" << endl;
 	cout << "----------------------------------------------"  << endl;
 } // end of projectStart()
 
-// The function will display the end of the project 
+// The function will display the end of the project
 void projectEnd()
 {
 	cout << "----------------------------------------------"  << endl;
