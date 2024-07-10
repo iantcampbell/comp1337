@@ -1,0 +1,3 @@
+C:/Users/Ian/CLionProjects/Class_Examples/cmake-build-debug/CMakeFiles/Class_Examples.dir
+C:/Users/Ian/CLionProjects/Class_Examples/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Ian/CLionProjects/Class_Examples/cmake-build-debug/CMakeFiles/rebuild_cache.dir
