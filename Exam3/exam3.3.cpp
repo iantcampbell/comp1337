@@ -79,9 +79,9 @@ class Dictionary
 // Decleration of prototype 
 int loadDictionary(Dictionary*);
 void menuLoop(Dictionary*, int);
-bool quizLoop(Dictionary*, int, int&, int&, string);
+bool quizLoop(Dictionary*, int, int&, int&, string, ofstream&, float&);
 int createRandomNumbers(int);
-bool askQuestion(Dictionary*, int);
+bool askQuestion(Dictionary*, int, ofstream&);
 
 int main()
 {
@@ -161,20 +161,34 @@ void menuLoop(Dictionary* myDictionary, int wordCount)
 	string name;
 	int totalQuestions = 0;
 	int totalCorrect = 0;
+	int attempted = 0;
+	float highestPercent = 0;
+	ofstream quizSummary;
+	quizSummary.open("quizSummary.txt"); //opens report file to write
 	
 	cout << "Welcome to the Ally Baba English-Spanish Class." << endl;
 	cout << endl;
 	name = getStringData("Please enter your name: ");
+	quizSummary << "Quiz Summary for " << name << endl;
+	quizSummary << dashes << endl;
 	cout << endl;
 	while (continueLoop)
 	{
-		continueLoop = quizLoop(myDictionary, wordCount, totalQuestions, totalCorrect, name);
+		continueLoop = quizLoop(myDictionary, wordCount, totalQuestions, totalCorrect, name, quizSummary, highestPercent);
 	}
+	
+	cout << dashes << endl;
+	cout << "FINAL QUIZ SUMMARY" << endl;
+	cout << dashes << endl;
+	attempted = totalQuestions + totalCorrect;
+	cout << "\tQuizzes Attempted: " << attempted << endl;
+	cout << "\tQuizzes Passed: " << totalCorrect << endl;
+	cout << "\tQuizzes Failed: " << totalQuestions << endl;
 	
 	// final summary here
 }
 
-bool quizLoop(Dictionary* myDictionary, int wordCount, int& totalQuestions, int& totalCorrect, string name)
+bool quizLoop(Dictionary* myDictionary, int wordCount, int& totalQuestions, int& totalCorrect, string name, ofstream& quizSummary, float& highestPercent)
 {
 	int questionCount;
 	int randomQuestion;
@@ -214,13 +228,17 @@ bool quizLoop(Dictionary* myDictionary, int wordCount, int& totalQuestions, int&
 			randomQuestion = createRandomNumbers(wordCount);
 		}
 		cout << "Question " << questionCounter << endl;
+		quizSummary << "Question " << questionCounter << endl;
 		
-		questionCorrect = askQuestion(myDictionary, randomQuestion);
+		
+		questionCorrect = askQuestion(myDictionary, randomQuestion, quizSummary);
 		questionAsked[randomQuestion] = true;
 		
 		if (questionCorrect)
 		{
 			cout << "\tResult: CORRECT!" << endl;
+			quizSummary << "\tResult: CORRECT!" << endl;
+			quizSummary << dashes << endl;
 			cout << dashes << endl;
 			correctCounter++;
 		}
@@ -228,6 +246,8 @@ bool quizLoop(Dictionary* myDictionary, int wordCount, int& totalQuestions, int&
 		{
 			cout << "\tResult: Incorrect." << endl;
 			cout << dashes << endl;
+			quizSummary << "\tResult: Incorrect." << endl;
+			quizSummary << dashes << endl;
 		}
 		
 	}
@@ -240,19 +260,33 @@ bool quizLoop(Dictionary* myDictionary, int wordCount, int& totalQuestions, int&
 	cout << "\tNumber of questions correct: " << correctCounter << endl;
 	cout << "\tYour percent grade: " << percent << "%" << endl;
 	
+	quizSummary << endl;
+	quizSummary << "Name: " << name << endl;
+	quizSummary << "\tNumber of questions in the quiz: " << questionCount << endl;
+	quizSummary << "\tNumber of questions correct: " << correctCounter << endl;
+	quizSummary << "\tYour percent grade: " << percent << "%" << endl;
 	if (percent >= 80)
 	{
 		cout << "Decision: PASSED! The passing score is 80%." << endl;
+		quizSummary << "Decision: PASSED! The passing score is 80%." << endl;
+		cout << endl;
+		totalCorrect++;
 	}
 	else 
 	{
 		cout << "Decision: Failed. The passing score is 80%." << endl;
+		quizSummary << "Decision: Failed. The passing score is 80%." << endl;
+		cout << endl;
+		totalQuestions++;
 	}
 	
-	totalQuestions += questionCount;
-	totalCorrect+= correctCounter;
+	if (percent > highestPercent)
+	{
+		highestPercent = percent;
+	}
 	
 	retake = getCharData("Do you want to take the quiz again (Y/N): ");
+	cout << dashes << endl;
 	
 	if (retake == 'Y')
 	{
@@ -274,14 +308,16 @@ int createRandomNumbers(int wordCount)
 	return random;
 }
 
-bool askQuestion(Dictionary* myDictionary, int questionIndex)
+bool askQuestion(Dictionary* myDictionary, int questionIndex, ofstream& quizSummary)
 {
 	string answer;
 	bool correct = false;
 	
 	myDictionary += questionIndex;
 	cout << "\tEnglish word: " << myDictionary -> getEnglish() << endl;
+	quizSummary << "\tEnglish word: " << myDictionary -> getEnglish() << endl;
 	answer = getStringData("\tYour answer in Spanish: ");
+	quizSummary << "\tYour answer in Spanish: " << answer << endl;
 	
 	correct = myDictionary -> checkAnswer(answer);
 	
